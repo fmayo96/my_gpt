@@ -3,27 +3,30 @@ import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from tokenizers import CharLevelEncoder, BPE
+from tokenizers import BPE
 
-#device = 'cuda' if torch.cuda.is_available() else 'cpu'
-device = 'mps'
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+#device = 'mps'
 #print(torch.backends.mps.is_available())
 
-block_size = 8
+block_size = 128
 batch_size = 32
-eval_interval = 100
+eval_interval = 200
 epochs = 5_000
-n_embd = 32
-n_head = 4
+n_embd = 64
+n_head = 8
 n_layer = 6
-dropout = 0.2
+dropout = 0.3
 
-with open('borges.txt', 'r') as f:
+LOAD_WEIGHTS = True
+TRAIN = False
+
+
+with open('data/dataset.txt', 'r') as f:
   text = f.read()
 
 
 print(f"Dataset contains {len(text)} characters")
-chars = sorted(list(set(text)))
 #vocab_size = len(chars)
 
 #encoder = CharLevelEncoder()
@@ -148,6 +151,10 @@ class Transformer(nn.Module):
     return X
   
 model = Transformer().to(device)
+
+if LOAD_WEIGHTS:
+  model.load_state_dict(torch.load('weights.pth', weights_only=True))
+
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
 
 def get_model_generation(max_tokens=100):
@@ -169,14 +176,15 @@ def estimate_loss():
   model.train()
   return out
 
-for epoch in range(epochs):
-  Xb, yb = get_batch(split='train')
-  logits, loss = model(Xb, yb)
-  optimizer.zero_grad(set_to_none=True)
-  loss.backward()
-  optimizer.step()
-  if epoch % eval_interval == 0:
-    eval_loss = estimate_loss()
-    print(f"Epoch: {epoch} | Train loss: {eval_loss['train']:.4} | Val loss: {eval_loss['val']:.4}")
+if TRAIN:
+  for epoch in range(epochs):
+    Xb, yb = get_batch(split='train')
+    logits, loss = model(Xb, yb)
+    optimizer.zero_grad(set_to_none=True)
+    loss.backward()
+    optimizer.step()
+    if epoch % eval_interval == 0:
+      eval_loss = estimate_loss()
+      print(f"Epoch: {epoch} | Train loss: {eval_loss['train']:.4} | Val loss: {eval_loss['val']:.4}")
 
 print(get_model_generation(max_tokens=500))

@@ -3,7 +3,7 @@ This is a tokenizer that generates character level tokens for all the characters
 present in a given dataset.
 """
 
-with open('borges.txt', 'r') as f:
+with open('data/dataset.txt', 'r') as f:
   text = f.read()
 
 chars = sorted(list(set(text)))

@@ -38,7 +38,7 @@ class BPE():
     return ids, merges
 
   def train(self, num_merges):
-    with open('cortazar.txt', 'r') as f:
+    with open('data/dataset.txt', 'r') as f:
       text = f.read()
     self.tokens = text.encode('utf8')
     self.tokens = list(map(int, self.tokens))
