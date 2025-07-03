@@ -13,3 +13,8 @@ Su pensamiaba con los brazos de una amcesa al gualde Sanda-Omeretrul, crestro! �
 Se parecía adornar la satura. Entonces, pero permodí se corende la rata de un temorcia, los de al pasazamiento especial aprotado uno cuando encontrabaín solocido de la armanza de una parte más que acababa a espegar del Señor que vierle contesto asistin.
 Sólo era prueba sonés lo rompo, nada las lilezas libras de nada
 ```
+
+### References:
+- https://www.youtube.com/watch?v=kCc8FmEb1nY
+- https://arxiv.org/abs/1706.03762
+- https://paperswithcode.com/method/bpe
