@@ -28,24 +28,23 @@ class BPE():
 
   def create_vocab(self, num_merges):
     ids = list(self.tokens)
-    merges = {}
     for i in range(num_merges):
       stats = self.get_stats(ids)
       pair = max(stats, key=stats.get)
       idx = 256 + i
       ids = self.merge(ids, pair, idx)
       self.merges[pair] = idx
-    return ids, merges
+    return ids
 
   def train(self, num_merges):
     with open('data/dataset.txt', 'r') as f:
       text = f.read()
     self.tokens = text.encode('utf8')
     self.tokens = list(map(int, self.tokens))
-    self.tokens, merges = self.create_vocab(num_merges)
+    self.tokens = self.create_vocab(num_merges)
     self.vocab = {idx: bytes([idx]) for idx in range(256)}
 
-    for (p0, p1), idx in merges.items():
+    for (p0, p1), idx in self.merges.items():
       self.vocab[idx] = self.vocab[p0] + self.vocab[p1]
 
   def decode(self, ids):

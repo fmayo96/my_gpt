@@ -5,8 +5,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from tokenizers import BPE
 
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-#device = 'mps'
+#device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'mps'
 #print(torch.backends.mps.is_available())
 
 block_size = 128
@@ -31,7 +31,7 @@ print(f"Dataset contains {len(text)} characters")
 
 #encoder = CharLevelEncoder()
 encoder = BPE()
-encoder.train(num_merges=40)
+encoder.train(num_merges=100)
 vocab_size = len(encoder.vocab)
 print('vocab_size: ', vocab_size)
 # Create tensors from data
@@ -153,7 +153,7 @@ class Transformer(nn.Module):
 model = Transformer().to(device)
 
 if LOAD_WEIGHTS:
-  model.load_state_dict(torch.load('weights.pth', weights_only=True))
+  model.load_state_dict(torch.load('weights.pth', weights_only=True, map_location=torch.device(device)))
 
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
 
