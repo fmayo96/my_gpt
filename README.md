@@ -1,7 +1,7 @@
 # MyGPT
 ## A transformer and tokenizer built from scratch using PyTorch, for eduational purposes.
 
-In order to generate text clone the repository and run `my_gpt.py`. It defaults to cuda if available, if not it can be set to use mps (Apple Silicon by uncomenting the corresponding line).
+In order to generate text clone the repository and run `my_gpt.py`. It defaults to cuda if available, if not it can be set to use mps (Apple Silicon) by uncomenting the corresponding line.
 
 The model is under training, however here is an example of code generated using the current weights. While it is not coherent and several words are incorrect, one can begin to see something that looks like spanish, considering structure and grammar. The current loss as measured by the cross entropy is 2.63.
 ```
